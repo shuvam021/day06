@@ -76,7 +76,7 @@ namespace DaySixAssignment
             {
                 int max = 110;
                 int min = 100;
-                while (max-min > arrLen)
+                while (max - min > arrLen)
                 {
                     int value = random.Next(min, max);
                     counter++;
@@ -238,6 +238,65 @@ namespace DaySixAssignment
             }
             Console.WriteLine($"{temp} in binary is {result}");
         }
+        private static void SwapNibbleAndGetDecimal()
+        {
+            string getBinary(int num)
+            {
+                int temp = num;
+                string result = string.Empty;
+                while (num > 0)
+                {
+                    int remainder = num % 2;
+                    num /= 2;
+                    result = remainder.ToString() + result;
+                }
+                return result;
+            }
+            void toDecimal(string s)
+            {
+                double num = 0;
+                char[] ch1 = new char[s.Length / 2];
+                char[] ch2 = new char[s.Length / 2];
+                // break into 2 variable
+                for (int i = 0; i < s.Length; i++)
+                {
+                    if (i < 4)
+                        ch1[i] = s[i];
+                    if (i >= 4)
+                        ch2[i - 4] = s[i];
+                }
+                string newBinNum = $"{new string(ch2)}{new string(ch1)}";
+                string revNewBinNum = new string(newBinNum.ToCharArray().Reverse().ToArray());
+                int count = 0;
+                foreach (char item in revNewBinNum)
+                {
+                    if (item == '1')
+                        num += Math.Pow(2, count);
+                    count++;
+                }
+                Console.WriteLine($"{s}->{newBinNum}->{num}");
+            }
+
+            Console.Write("Enter a number to convert into binary = ");
+            int num = Convert.ToInt32(Console.ReadLine());
+            string binNum = getBinary(num);
+            int len = 8 - binNum.Length;
+            if (binNum.Length <= 8) // 11001
+            {
+                for (int i = 0; i < len; i++)
+                {
+                    binNum = 0 + binNum; // 00011001
+                }
+            }
+            if (binNum.Length > 8)
+            {
+                Console.WriteLine("Try using 8 bit decimal number");
+                return;
+            }
+            Console.Write($"{num}->{binNum}->");
+            toDecimal(binNum);
+        }
+
         static void Main(string[] args)
         {
             Console.WriteLine("Day 6 Assignments");
@@ -246,7 +305,7 @@ namespace DaySixAssignment
             // PerfectNumberProgram();                     // Part 1: Question 02
             // PrimeNumberProgram();                       // Part 1: Question 03
             // ReverseNumberProgram();                     // Part 1: Question 04
-            CouponNumbersProgram();                     // Part 1: Question 05
+            // CouponNumbersProgram();                     // Part 1: Question 05
 
             Console.WriteLine(">>>>>>>>>>>>>>>>>>Programs for NUnit Testing>>>>>>>>>>>>>>>>>>");
             // VendingMachineProgram();                    // Part 2: Question 01
@@ -254,6 +313,7 @@ namespace DaySixAssignment
             // TemperatureConversion();                    // Part 2: Question 03
             // MonthlyPayment();                           // Part 2: Question 04
             // ToBinary();                                 // Part 2: Question 06
+            SwapNibbleAndGetDecimal();                  // Part 2: Question 07
         }
     }
 }
